@@ -13,14 +13,15 @@ public class moveGround : MonoBehaviour
     {
         groundTransform.position += new Vector3(0, 0, -speed*Time.deltaTime);
         groundTransform2.position += new Vector3(0, 0, -speed*Time.deltaTime);
+
         
         if (groundTransform2.position.z < train.position.z)
         {
-            groundTransform.position = groundTransform2.position + new Vector3(0, 0, 750);
+            groundTransform.position = groundTransform2.position + new Vector3(0, 0, groundTransform2.localScale.z * 10);
         }
         if (groundTransform.position.z < train.position.z)
         {
-            groundTransform2.position = groundTransform.position + new Vector3(0, 0, 750);
+            groundTransform2.position = groundTransform.position + new Vector3(0, 0, groundTransform.localScale.z * 10);
         }
     }
 }

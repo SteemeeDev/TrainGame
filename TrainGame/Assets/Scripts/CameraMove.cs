@@ -6,6 +6,7 @@ public class CameraMove : MonoBehaviour
 {
     public float Sensititivity;
 
+    // Player gameobject (parent)
     public Transform player;
 
     float xRotation;

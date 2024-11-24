@@ -8,7 +8,9 @@ public class Item : MonoBehaviour
 {
     [SerializeField] Transform holdPos;
     [SerializeField] Transform player;
-    public bool holdItem;
+    
+    [HideInInspector] public bool holdItem;
+
     private Vector3 startPos;
     private Quaternion startRot;
     private void Start()

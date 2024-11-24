@@ -44,8 +44,8 @@ public class SourceMove : MonoBehaviour
         else
         {
             //Keep going in the same direction after jump, if move key is pressed
-            airDir.x = wishDir.x != 0 ? wishDir.x : airDir.x;
-            airDir.z = wishDir.z != 0 ? wishDir.z : airDir.z;
+            airDir.x = wishDir.x != 0 ? wishDir.x: airDir.x;
+            airDir.z = wishDir.z != 0 ? wishDir.z: airDir.z;
 
             moveDir = Vector3.Lerp(moveDir, airDir, airControl * Time.deltaTime);
         }

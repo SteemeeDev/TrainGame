@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PickupItem : MonoBehaviour
 {
-    //Layer for all pickuppable items
-    [SerializeField] LayerMask ItemLayer;
+    //Layer for all item hitboxes (item parent)
+    [SerializeField] LayerMask ItemHitboxLayer;
+    [SerializeField] int HeldItemLayer = 9;
 
     RaycastHit hit;
     bool holdItem = false;
@@ -18,8 +19,14 @@ public class PickupItem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && !holdItem)
         {
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 5, ItemLayer, QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 5, ItemHitboxLayer, QueryTriggerInteraction.Collide))
             {
+                //Set Children of gameobject to item layer so that it gets rendered on top
+                for (int i = 0; i < hit.transform.childCount; i++)
+                {
+                    hit.transform.GetChild(i).gameObject.layer = HeldItemLayer;
+                }
+
                 // Grab item and initialise coroutine
                 returnItem = hit.transform.gameObject.GetComponent<Item>().returnToStartPos(3);
                 hit.transform.gameObject.GetComponent<Item>().holdItem = true;
@@ -42,6 +49,11 @@ public class PickupItem : MonoBehaviour
             StartCoroutine(returnItem);
             holdItem = false;
             letGoOfKey = false;
+
+            for (int i = 0; i < hit.transform.childCount; i++)
+            {
+                hit.transform.GetChild(i).gameObject.layer = 0;
+            }
         }
 
         //Debug

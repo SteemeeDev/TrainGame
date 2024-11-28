@@ -28,7 +28,7 @@ public class PickupItem : MonoBehaviour
                 }
 
                 // Grab item and initialise coroutine
-                returnItem = hit.transform.gameObject.GetComponent<Item>().returnToStartPos(3);
+                returnItem = hit.transform.gameObject.GetComponent<Item>().LetGoOfItem();
                 hit.transform.gameObject.GetComponent<Item>().holdItem = true;
 
                 Debug.Log("Picking up item" + hit.transform.gameObject.name);

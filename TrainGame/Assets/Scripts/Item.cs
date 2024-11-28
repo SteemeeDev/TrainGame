@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    [SerializeField] float returnSeconds = 0.3f;
+    [SerializeField] bool fallToGround = false;
     [SerializeField] Transform holdPos;
     [SerializeField] Transform player;
     
@@ -13,24 +15,46 @@ public class Item : MonoBehaviour
 
     private Vector3 startPos;
     private Quaternion startRot;
+
+    private Rigidbody Rigidbody;
     private void Start()
     {
+        Rigidbody = GetComponent<Rigidbody>();
         startPos = transform.position;
         startRot = transform.rotation;
     }
-    public IEnumerator returnToStartPos(float lerpDuration)
+    public IEnumerator LetGoOfItem()
     {
         Debug.Log("Letting go of item");
-        float elapsed = 0;
-        while (elapsed < lerpDuration/2-1f)
+        if (fallToGround)
         {
-            elapsed += Time.deltaTime;
-
-            transform.position = Vector3.Lerp(transform.position, startPos, Mathf.SmoothStep(0f, 1f, elapsed));
-            transform.rotation = Quaternion.Lerp(transform.rotation, startRot, Mathf.SmoothStep(0f, 1f, elapsed));
-
-            yield return null;
+            Rigidbody.useGravity = true;
+            Rigidbody.isKinematic = false;
+            Rigidbody.velocity = player.forward;
+            Rigidbody.angularVelocity = new Vector3(45, 1, 1);
         }
+        else if (!fallToGround)
+        {
+            Rigidbody.useGravity = false;
+            Rigidbody.isKinematic = true;
+            Vector3 letGoPos = transform.position;
+            Quaternion letGoRot = transform.rotation;
+
+            float elapsed = 0;
+            float t = 0;
+
+            while (elapsed < returnSeconds)
+            {
+                elapsed += Time.deltaTime;
+                t = elapsed / returnSeconds;
+
+                transform.position = Vector3.Lerp(letGoPos, startPos, Mathf.SmoothStep(0f, 1f, t));
+                transform.rotation = Quaternion.Lerp(letGoRot, startRot, Mathf.SmoothStep(0f, 1f, t));
+
+                yield return null;
+            }
+        }
+
     }
     
     // Update is called once per frame
@@ -38,8 +62,9 @@ public class Item : MonoBehaviour
     {
         if (holdItem)
         {
+            Rigidbody.useGravity = false;
             transform.position = Vector3.Lerp(transform.position, holdPos.position, 30 * Time.deltaTime);
-            transform.rotation = player.rotation;
+            transform.rotation = holdPos.rotation;
         }
     }
 }

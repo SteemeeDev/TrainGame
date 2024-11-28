@@ -22,8 +22,8 @@ public class CameraMove : MonoBehaviour
         float mouseX = Input.GetAxisRaw("Mouse X");
         float mouseY = Input.GetAxisRaw("Mouse Y");
 
-        xRotation += mouseX;
-        yRotation -= mouseY;
+        xRotation += mouseX * Sensititivity;
+        yRotation -= mouseY * Sensititivity;
 
         yRotation = Mathf.Clamp(yRotation, -90, 90);
 

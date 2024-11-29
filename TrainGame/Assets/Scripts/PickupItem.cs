@@ -7,12 +7,19 @@ public class PickupItem : MonoBehaviour
     //Layer for all item hitboxes (item parent)
     [SerializeField] LayerMask ItemHitboxLayer;
     [SerializeField] int HeldItemLayer = 9;
+    [SerializeField] Camera itemCamera;
+    Camera mainCamera;
 
     RaycastHit hit;
     bool holdItem = false;
     bool letGoOfKey = false;
 
-    private IEnumerator returnItem; 
+    private IEnumerator returnItem;
+
+    private void Awake()
+    {
+        mainCamera = GetComponent<Camera>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -21,11 +28,9 @@ public class PickupItem : MonoBehaviour
         {
             if (Physics.Raycast(transform.position, transform.forward, out hit, 5, ItemHitboxLayer, QueryTriggerInteraction.Collide))
             {
-                //Set Children of gameobject to item layer so that it gets rendered on top
-                for (int i = 0; i < hit.transform.childCount; i++)
-                {
-                    hit.transform.GetChild(i).gameObject.layer = HeldItemLayer;
-                }
+                //Change itemcameras culling mask so that it renders the item
+                itemCamera.cullingMask |= (1 << HeldItemLayer);
+                mainCamera.cullingMask &= ~(1<<HeldItemLayer);
 
                 // Grab item and initialise coroutine
                 returnItem = hit.transform.gameObject.GetComponent<Item>().LetGoOfItem();
@@ -49,11 +54,8 @@ public class PickupItem : MonoBehaviour
             StartCoroutine(returnItem);
             holdItem = false;
             letGoOfKey = false;
-
-            for (int i = 0; i < hit.transform.childCount; i++)
-            {
-                hit.transform.GetChild(i).gameObject.layer = 0;
-            }
+            itemCamera.cullingMask &= ~(1 << HeldItemLayer);
+            mainCamera.cullingMask |= (1 << HeldItemLayer);
         }
 
         //Debug

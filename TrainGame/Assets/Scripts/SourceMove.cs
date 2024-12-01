@@ -27,10 +27,12 @@ public class SourceMove : MonoBehaviour
     Vector3 velocity;
     Vector3 airDir;
 
+    public Vector3 wishDir;
+
     void Update()
     {
         bool grounded = Physics.CheckSphere(groundCheck.position, 0.3f, layerMask);
-        Vector3 wishDir = Input.GetAxisRaw("Horizontal") * transform.right + Input.GetAxisRaw("Vertical") * transform.forward;
+        wishDir = Input.GetAxisRaw("Horizontal") * transform.right + Input.GetAxisRaw("Vertical") * transform.forward;
 
         wishDir = wishDir.normalized;
 

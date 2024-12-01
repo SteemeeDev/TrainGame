@@ -28,15 +28,15 @@ public class PickupItem : MonoBehaviour
         {
             if (Physics.Raycast(transform.position, transform.forward, out hit, 5, ItemHitboxLayer, QueryTriggerInteraction.Collide))
             {
-                //Change itemcameras culling mask so that it renders the item
+                //Change itemcameras culling mask so that it renders the item and stop the main camera from rendering it
                 itemCamera.cullingMask |= (1 << HeldItemLayer);
-                mainCamera.cullingMask &= ~(1<<HeldItemLayer);
+                mainCamera.cullingMask &= ~(1 << HeldItemLayer);
 
                 // Grab item and initialise coroutine
                 returnItem = hit.transform.gameObject.GetComponent<Item>().LetGoOfItem();
                 hit.transform.gameObject.GetComponent<Item>().holdItem = true;
 
-                Debug.Log("Picking up item" + hit.transform.gameObject.name);
+                Debug.Log("Picking up item " + hit.transform.gameObject.name);
                 holdItem = true;
             }
         }
@@ -50,10 +50,11 @@ public class PickupItem : MonoBehaviour
         //Let of of item
         if (letGoOfKey && Input.GetKeyDown(KeyCode.E))
         {
-            hit.transform.gameObject.GetComponent<Item>().holdItem = false;
             StartCoroutine(returnItem);
-            holdItem = false;
+
             letGoOfKey = false;
+            holdItem = false;
+
             itemCamera.cullingMask &= ~(1 << HeldItemLayer);
             mainCamera.cullingMask |= (1 << HeldItemLayer);
         }

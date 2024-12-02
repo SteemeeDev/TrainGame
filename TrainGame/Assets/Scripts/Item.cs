@@ -11,7 +11,7 @@ public abstract class Item : MonoBehaviour
     [SerializeField] public Transform player;
    // SourceMove playerMove; 
     
-    [HideInInspector] public bool holdItem;
+    public bool holdItem;
 
     private Vector3 startPos;
     private Quaternion startRot;

@@ -15,7 +15,7 @@ public class PickupItem : MonoBehaviour
     bool letGoOfKey = false;
 
     private IEnumerator returnItem;
-
+    private IEnumerator grabItem;
     private void Awake()
     {
         mainCamera = GetComponent<Camera>();
@@ -35,6 +35,7 @@ public class PickupItem : MonoBehaviour
                 // Grab item and initialise coroutine
                 returnItem = hit.transform.gameObject.GetComponent<Item>().LetGoOfItem();
                 hit.transform.gameObject.GetComponent<Item>().holdItem = true;
+                
 
                 Debug.Log("Picking up item " + hit.transform.gameObject.name);
                 holdItem = true;

@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class moveGround : MonoBehaviour
+public class GroundMover : MonoBehaviour
 {
     [SerializeField] Transform groundTransform;
     [SerializeField] Transform groundTransform2;
     [SerializeField] Transform train;
     [SerializeField] float speed = 20;
+
+    private void Awake()
+    {
+        Debug.Log("moving ground!");
+    }
     // Update is called once per frame
     void Update()
     {

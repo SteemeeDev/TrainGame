@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class Flashlight : Item
 {
+    [Header ("Flashlight settings")]
     [SerializeField] Light m_light;
+    [SerializeField] float intensity;
+    public override void Awake()
+    {
+        base.Awake();
+        m_light.intensity = intensity;
+    }
+
     public override IEnumerator LetGoOfItem()
     {
         Debug.Log("Letting go of item");
 
         holdItem = false;
+        returned = false;
 
         m_Rigidbody.useGravity = true;
         m_Rigidbody.isKinematic = false;
-        m_Rigidbody.velocity = player.forward * 5 + player.up*3;
+        m_Rigidbody.velocity = player.forward * 5 + player.up * 3;
 
         yield return null;
     }

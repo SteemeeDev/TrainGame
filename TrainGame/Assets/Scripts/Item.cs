@@ -1,34 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class Item : MonoBehaviour
+public class Item : MonoBehaviour
 {
-    [SerializeField] float returnSeconds = 0.3f;
     [SerializeField] Transform holdPos;
     [SerializeField] public Transform player;
-   // SourceMove playerMove; 
+    SourceMove playerMove; 
     
     public bool holdItem;
+
 
     private Vector3 startPos;
     private Quaternion startRot;
 
     public Rigidbody m_Rigidbody;
-    private void Awake()
+
+    [SerializeField] float returnSeconds = 0.3f;
+
+    [Header("Smoothing settings")]
+    [SerializeField, Tooltip("Whether or not the item should lag behind")] bool smooth;
+    [SerializeField] float smoothDelay;
+
+    public virtual void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-       // playerMove = player.GetComponent<SourceMove>();
+        playerMove = player.GetComponent<SourceMove>();
         startPos = transform.position;
         startRot = transform.rotation;
     }
+
+    [HideInInspector] public bool returned = false;
 
     public virtual IEnumerator LetGoOfItem()
     {
         Debug.Log("Letting go of item");
 
+        returned = false;
         holdItem = false;
 
         m_Rigidbody.useGravity = false;
@@ -52,23 +65,41 @@ public abstract class Item : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+
+    Vector3 zero = Vector3.zero;
     public virtual void Update()
     {
-        if (holdItem)
+        if (holdItem && smooth)
         {
             m_Rigidbody.useGravity = false;
-            /*// TODO fix flashlight not being visible when moving forwards
-            if (playerMove.wishDir.magnitude > 0) {
-                transform.position = holdPos.position;
+            m_Rigidbody.isKinematic = false;
+            if (playerMove.wishDir.magnitude <= 0.01f)
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, holdPos.position, ref zero, smoothDelay);
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, holdPos.position, 30 * Time.deltaTime);
-            }*/
-            transform.position = Vector3.Lerp(transform.position, holdPos.position, 30 * Time.deltaTime);
+                transform.position = Vector3.SmoothDamp(transform.position, holdPos.position, ref zero, smoothDelay / 3);
+            }
             transform.rotation = holdPos.rotation;
         }
-
+        if (holdItem && !smooth)
+        {
+            m_Rigidbody.useGravity = false;
+            m_Rigidbody.isKinematic = false;
+            if (Vector3.Distance(transform.position, holdPos.position) > 0.3f && !returned)
+            {
+                transform.position = Vector3.Lerp(transform.position, holdPos.position, 20 * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, holdPos.rotation, 20 * Time.deltaTime);
+            }else
+            {
+                returned = true;
+            }
+            if (returned)
+            {
+                transform.position = holdPos.position;
+                transform.rotation = holdPos.rotation;
+            }
+        }
     }
 }

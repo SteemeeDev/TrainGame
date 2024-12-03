@@ -28,7 +28,6 @@ public class SourceMove : MonoBehaviour
     Vector3 airDir;
 
     public Vector3 wishDir;
-
     void Update()
     {
         bool grounded = Physics.CheckSphere(groundCheck.position, 0.3f, layerMask);

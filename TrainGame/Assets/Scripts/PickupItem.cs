@@ -32,6 +32,11 @@ public class PickupItem : MonoBehaviour
                 itemCamera.cullingMask |= (1 << HeldItemLayer);
                 mainCamera.cullingMask &= ~(1 << HeldItemLayer);
 
+                for (int i = 0; i < hit.transform.childCount; i++)
+                {
+                    hit.transform.GetChild(i).gameObject.layer = HeldItemLayer;
+                } 
+
                 // Grab item and initialise coroutine
                 returnItem = hit.transform.gameObject.GetComponent<Item>().LetGoOfItem();
                 hit.transform.gameObject.GetComponent<Item>().holdItem = true;
@@ -58,6 +63,10 @@ public class PickupItem : MonoBehaviour
 
             itemCamera.cullingMask &= ~(1 << HeldItemLayer);
             mainCamera.cullingMask |= (1 << HeldItemLayer);
+            for (int i = 0; i < hit.transform.childCount; i++)
+            {
+                hit.transform.GetChild(i).gameObject.layer = 0;
+            }
         }
 
         //Debug

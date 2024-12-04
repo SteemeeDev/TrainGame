@@ -7,15 +7,12 @@ using UnityEngine;
 
 public class FlipLever : MonoBehaviour
 {
-    [SerializeField] Animator animator;
+    [SerializeField] public Animator animator;
 
     // 1 = right turn
     // 0 = left turn
-    // 2 = Dead end
-    // 3 = Open end
-    int currenttrack;
 
-    struct POI { int index; bool deadEnd; };
+    int currenttrack;
 
     static Dictionary<int[], int> tracksLookup = new Dictionary<int[], int>(){
         {new int[]{1},       1},
@@ -31,13 +28,12 @@ public class FlipLever : MonoBehaviour
         {new int[]{0,0,0, }, 104},
         {new int[]{0,0,0,0}, 105},
         {new int[]{0,0,1,0}, 105},
-        {new int[]{0,0,1,1}, 106},
-        {new int[]{0,0,0,1}, 106},
+        {new int[]{0,0,1,1}, 107},
         {new int[]{0,0,0,1}, 107}
     };
     public  List<int> leverPulls = new List<int>();
 
-    bool leverFlipped = false;
+    public bool leverFlipped = false;
 
     bool arrayEqual(int[] a, int[] b)
     {
@@ -53,7 +49,7 @@ public class FlipLever : MonoBehaviour
     int[] deadEnds = { 2, 4, 101, 105, 107 };
     bool hitDeadEnd = false;
 
-    IEnumerator flipLever()
+    public IEnumerator flipLever()
     {
         Debug.Log("FLIP A LEVER WITHIN 5 SECONDS");
 
@@ -87,11 +83,6 @@ public class FlipLever : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            leverFlipped = !leverFlipped;
-            animator.SetBool("LeverFlipped", leverFlipped);
-        }
         if (Input.GetKeyDown(KeyCode.O))
         {
             StartCoroutine(flipLever());

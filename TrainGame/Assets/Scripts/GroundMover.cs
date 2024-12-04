@@ -8,6 +8,7 @@ public class GroundMover : MonoBehaviour
     [SerializeField] Transform groundTransform2;
     [SerializeField] Transform train;
     [SerializeField] float speed = 20;
+    [SerializeField] float stepSize;
 
     private void Awake()
     {
@@ -22,11 +23,11 @@ public class GroundMover : MonoBehaviour
         
         if (groundTransform2.position.z < train.position.z)
         {
-            groundTransform.position = groundTransform2.position + new Vector3(0, 0, groundTransform2.localScale.z * 10);
+            groundTransform.position = groundTransform2.position + new Vector3(0, 0, stepSize);
         }
         if (groundTransform.position.z < train.position.z)
         {
-            groundTransform2.position = groundTransform.position + new Vector3(0, 0, groundTransform.localScale.z * 10);
+            groundTransform2.position = groundTransform.position + new Vector3(0, 0, stepSize);
         }
     }
 }

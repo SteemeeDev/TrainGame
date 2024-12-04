@@ -48,7 +48,7 @@ public class cameraShake : MonoBehaviour
             if (Random.Range(0f, 1f) <= bigShakeChance)
             {
                 Debug.Log("Big shake!");
-                StartCoroutine(shakeCamera(0.1f, 0.07f));
+                StartCoroutine(shakeCamera(0.1f, 0.05f));
                 waitTime = 5;
             }
             yield return new WaitForSeconds(minimumWaitTime + waitTime);

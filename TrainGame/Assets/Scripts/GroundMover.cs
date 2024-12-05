@@ -15,19 +15,19 @@ public class GroundMover : MonoBehaviour
         Debug.Log("moving ground!");
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        groundTransform.position += new Vector3(0, 0, -speed*Time.deltaTime);
-        groundTransform2.position += new Vector3(0, 0, -speed*Time.deltaTime);
+        groundTransform.position  += groundTransform.forward * -speed * Time.fixedDeltaTime;
+        groundTransform2.position += groundTransform2.forward * -speed * Time.fixedDeltaTime;
 
-        
+
         if (groundTransform2.position.z < train.position.z)
         {
-            groundTransform.position = groundTransform2.position + new Vector3(0, 0, stepSize);
+            groundTransform.position = groundTransform2.position + groundTransform.forward * stepSize;
         }
         if (groundTransform.position.z < train.position.z)
         {
-            groundTransform2.position = groundTransform.position + new Vector3(0, 0, stepSize);
+            groundTransform2.position = groundTransform.position + groundTransform2.forward * stepSize;
         }
     }
 }

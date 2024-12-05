@@ -43,8 +43,12 @@ public class PickupItem : MonoBehaviour
 
                 animator.SetBool("LeverFlipped", leverFlipped);
             }
+            else
+            {
+                canDropItem= true;
+            }
 
-            else if (!holdItem && Physics.Raycast(transform.position, transform.forward, out itemHit, 5, ItemHitboxLayer, QueryTriggerInteraction.Collide))
+            if (!holdItem && Physics.Raycast(transform.position, transform.forward, out itemHit, 5, ItemHitboxLayer, QueryTriggerInteraction.Collide))
             {
                 //Change itemcameras culling mask so that it renders the item and stop the main camera from rendering it
                 itemCamera.cullingMask |= (1 << HeldItemLayer);

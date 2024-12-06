@@ -18,6 +18,7 @@ public class TrainTrackMover : MonoBehaviour
     [SerializeField] float stepSize2;
 
     bool turning = false;
+    bool a = false;
 
     private void Awake()
     {
@@ -26,34 +27,38 @@ public class TrainTrackMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!turn)
+        if (!turning)
         {
+           
             trackTransform.position += trackTransform.forward * -speed * Time.deltaTime;
+
             trackTransform2.position += trackTransform2.forward * -speed * Time.deltaTime;
         }
 
-        if (trackTransform2.position.z < train.position.z)
+        if (trackTransform2.position.z < train.position.z && a == false)
         {
-            if (!turn)
-            {
-                Debug.Log("No turning!");
-                trackTransform.position = trackTransform2.position + trackTransform.forward * stepSize2;
-            }
+            trackTransform.position = trackTransform2.position + trackTransform.forward * stepSize2;
             if (turn)
             {
                 Debug.Log("TURN!");
                 turnObj.SetActive(true);
                 trackTransform.gameObject.SetActive(false);
-                trackTransform2.gameObject.SetActive(false);
+        
+                turn = false;
             }
+            a = true;
         }
-        if (trackTransform.position.z < train.position.z)
+        if (trackTransform.position.z < train.position.z && a == true)
         {
             trackTransform2.position = trackTransform.position + trackTransform2.forward * stepSize1;
+            a = false;
         }
 
         if (turnAnim.GetCurrentAnimatorStateInfo(0).IsName("TurnLeft") || turnAnim.GetCurrentAnimatorStateInfo(0).IsName("TurnRight"))
         {
+            Debug.Log("ANIMATION PLAYING");
+            trackTransform2.gameObject.SetActive(false);
+            trackTransform.gameObject.SetActive(false);
             turning = true;
         }
         if (turning && turnAnim.GetCurrentAnimatorStateInfo(0).IsName("Nothing"))
@@ -64,6 +69,7 @@ public class TrainTrackMover : MonoBehaviour
             trackTransform2.gameObject.SetActive(true);
             turn = false;
             turning = false;
+         
         }
     }
 }

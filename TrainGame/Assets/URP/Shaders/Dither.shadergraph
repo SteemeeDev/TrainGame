@@ -192,10 +192,10 @@
     "m_BlendMode": 0,
     "m_SrcColorBlendMode": 0,
     "m_DstColorBlendMode": 1,
-    "m_ColorBlendOperation": 0,
+    "m_ColorBlendOperation": 4,
     "m_SrcAlphaBlendMode": 0,
     "m_DstAlphaBlendMode": 1,
-    "m_AlphaBlendOperation": 0,
+    "m_AlphaBlendOperation": 1,
     "m_EnableStencil": false,
     "m_StencilReference": 0,
     "m_StencilReadMask": 255,
@@ -206,7 +206,7 @@
     "m_StencilDepthFailOperation": 0,
     "m_DepthWrite": false,
     "m_depthWriteMode": 0,
-    "m_AllowMaterialOverride": false,
+    "m_AllowMaterialOverride": true,
     "m_DepthTestMode": 0
 }
 

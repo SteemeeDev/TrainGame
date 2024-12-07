@@ -7,6 +7,7 @@ public class Flashlight : Item
     [Header ("Flashlight settings")]
     [SerializeField] Light m_light;
     [SerializeField] float intensity;
+    [SerializeField] PlayerMenuManager menuManager;
     public override void Awake()
     {
         base.Awake();
@@ -30,7 +31,7 @@ public class Flashlight : Item
     public override void Update()
     {
         base.Update();
-        if (holdItem && Input.GetMouseButtonDown(0))
+        if (holdItem && Input.GetMouseButtonDown(0) && !menuManager.menuOpen)
         {
             m_light.enabled = !m_light.enabled;
         }

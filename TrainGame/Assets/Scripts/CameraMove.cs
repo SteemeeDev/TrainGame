@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraMove : MonoBehaviour
 {
     public float Sensititivity;
+    public bool canMove = true;
 
     // Player gameobject (parent)
     public Transform player;
@@ -19,15 +20,17 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X");
-        float mouseY = Input.GetAxisRaw("Mouse Y");
+        if (canMove) {
+            float mouseX = Input.GetAxisRaw("Mouse X");
+            float mouseY = Input.GetAxisRaw("Mouse Y");
 
-        xRotation += mouseX * Sensititivity;
-        yRotation -= mouseY * Sensititivity;
+            xRotation += mouseX * Sensititivity;
+            yRotation -= mouseY * Sensititivity;
 
-        yRotation = Mathf.Clamp(yRotation, -90, 90);
+            yRotation = Mathf.Clamp(yRotation, -90, 90);
 
-        transform.rotation = Quaternion.Euler(yRotation, xRotation, 0);
-        player.rotation = Quaternion.Euler(0, xRotation, 0);
+            transform.rotation = Quaternion.Euler(yRotation, xRotation, 0);
+            player.rotation = Quaternion.Euler(0, xRotation, 0);
+        }
     }
 }

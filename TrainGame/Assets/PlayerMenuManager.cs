@@ -10,7 +10,7 @@ public class PlayerMenuManager : MonoBehaviour
     public GameObject activeMenu;
     [SerializeField] Slider sensitivtySlider;
     [SerializeField] Slider volumeSlider;
-    [SerializeField] AudioSource ambience;
+    [SerializeField] AudioMixer audioMixer;
     CameraMove CameraMove;
 
     public bool menuOpen = false;
@@ -40,7 +40,7 @@ public class PlayerMenuManager : MonoBehaviour
         }
         if (menuOpen)
         {
-            ambience.volume = volumeSlider.value;
+            audioMixer.SetFloat("MasterVolume", volumeSlider.value);
         }
     }
 

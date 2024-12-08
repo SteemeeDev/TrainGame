@@ -9,16 +9,16 @@ public class TrainTrackMover : MonoBehaviour
 
 
     [SerializeField] GameObject turnObj;
-    [SerializeField] Animator turnAnim;
+    [SerializeField] public Animator turnAnim;
 
     [SerializeField] Transform train;
-    [SerializeField] bool turn;
+    [SerializeField] public bool turn;
     [SerializeField] float speed = 20;
     [SerializeField] float stepSize1;
     [SerializeField] float stepSize2;
 
-    bool turning = false;
-    bool a = false;
+    public bool turning = false;
+    bool a = false; //Avoid checking the same thing every frame
 
     private void Awake()
     {
@@ -29,9 +29,7 @@ public class TrainTrackMover : MonoBehaviour
     {
         if (!turning)
         {
-           
             trackTransform.position += trackTransform.forward * -speed * Time.deltaTime;
-
             trackTransform2.position += trackTransform2.forward * -speed * Time.deltaTime;
         }
 
@@ -40,7 +38,6 @@ public class TrainTrackMover : MonoBehaviour
             trackTransform.position = trackTransform2.position + trackTransform.forward * stepSize2;
             if (turn)
             {
-                Debug.Log("TURN!");
                 turnObj.SetActive(true);
                 trackTransform.gameObject.SetActive(false);
         
@@ -56,14 +53,12 @@ public class TrainTrackMover : MonoBehaviour
 
         if (turnAnim.GetCurrentAnimatorStateInfo(0).IsName("TurnLeft") || turnAnim.GetCurrentAnimatorStateInfo(0).IsName("TurnRight"))
         {
-            Debug.Log("ANIMATION PLAYING");
             trackTransform2.gameObject.SetActive(false);
             trackTransform.gameObject.SetActive(false);
             turning = true;
         }
         if (turning && turnAnim.GetCurrentAnimatorStateInfo(0).IsName("Nothing"))
         {
-            Debug.Log("ANIMATION DONE");
             turnObj.SetActive(false);
             trackTransform.gameObject.SetActive(true);
             trackTransform2.gameObject.SetActive(true);

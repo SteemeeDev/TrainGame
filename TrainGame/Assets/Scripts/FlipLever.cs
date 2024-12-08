@@ -8,6 +8,7 @@ using UnityEngine;
 public class FlipLever : MonoBehaviour
 {
     [SerializeField] public Animator animator;
+    [SerializeField] TrainTrackMover trackMover;
 
     // 1 = right turn
     // 0 = left turn
@@ -31,29 +32,35 @@ public class FlipLever : MonoBehaviour
         {new int[]{0,0,1,1}, 107},
         {new int[]{0,0,0,1}, 107}
     };
-    public  List<int> leverPulls = new List<int>();
+    public List<int> leverPulls = new List<int>();
 
     public bool leverFlipped = false;
-
+    /*
     bool arrayEqual(int[] a, int[] b)
     {
-        if (a.Length != b.Length) return false; 
+        if (a.Length != b.Length) return false;
 
         for (int i = 0; i < a.Length; i++)
         {
             if (a[i] != b[i]) return false;
         }
         return true;
-    }
+    }*/
 
     int[] deadEnds = { 2, 4, 101, 105, 107 };
     bool hitDeadEnd = false;
 
-    public IEnumerator flipLever()
+    public IEnumerator turnTrain()
     {
-        Debug.Log("FLIP A LEVER WITHIN 5 SECONDS");
+        Debug.Log("FLIP A LEVER");
 
-        yield return new WaitForSeconds(5);
+        trackMover.turn = true;
+
+        while (trackMover.turnAnim.GetCurrentAnimatorStateInfo(0).IsName("Nothing"))
+            yield return null;
+
+        while (trackMover.turning) 
+            yield return null;
 
         if (hitDeadEnd)
         {
@@ -66,7 +73,7 @@ public class FlipLever : MonoBehaviour
         leverPulls.Add(Convert.ToInt32(leverFlipped));
         for (int i = 0; i < tracksLookup.Keys.Count; i++)
         {
-            if (arrayEqual(leverPulls.ToArray(), tracksLookup.ElementAt(i).Key))
+            if (leverPulls.ToArray().SequenceEqual(tracksLookup.ElementAt(i).Key))
             {
                 Debug.Log(tracksLookup.ElementAt(i).Value);
                 if (deadEnds.Contains(tracksLookup.ElementAt(i).Value)) hitDeadEnd = true;
@@ -79,13 +86,11 @@ public class FlipLever : MonoBehaviour
         }
 
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            StartCoroutine(flipLever());
+            StartCoroutine(turnTrain());
         }
     }
 }

@@ -15,7 +15,6 @@ public class spawnTurn : MonoBehaviour
     private void Awake()
     {
         startPoint = transform.position;
-        Debug.Log("moving ground!");
     }
     // Update is called once per frame
     void Update()

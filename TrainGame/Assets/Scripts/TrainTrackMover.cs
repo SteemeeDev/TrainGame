@@ -13,12 +13,15 @@ public class TrainTrackMover : MonoBehaviour
 
     [SerializeField] Transform train;
     [SerializeField] public bool turn;
+    [SerializeField] float maxSpeed = 20;
     [SerializeField] float speed = 20;
     [SerializeField] float stepSize1;
     [SerializeField] float stepSize2;
 
     public bool turning = false;
     bool a = false; //Avoid checking the same thing every frame
+
+    float t;
 
     private void Awake()
     {
@@ -27,6 +30,11 @@ public class TrainTrackMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        t = speed / maxSpeed;
+        turnAnim.speed = t;
+
+
         if (!turning)
         {
             trackTransform.position += trackTransform.forward * -speed * Time.deltaTime;

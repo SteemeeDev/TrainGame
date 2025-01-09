@@ -42,7 +42,7 @@ public class Cockroach : MonoBehaviour
                 while (elapsed < duration)
                 {
                     elapsed += Time.deltaTime;
-                    transform.position += transform.forward * Time.deltaTime;
+                    transform.position += transform.up * Time.deltaTime;
                     yield return null;
                 }
                 break;
@@ -51,8 +51,8 @@ public class Cockroach : MonoBehaviour
                 while (elapsed < duration)
                 {
                     elapsed += Time.deltaTime;
-                    transform.position += transform.forward * Time.deltaTime * 0.5f;
-                    transform.Rotate(0, 300 * Time.deltaTime, 0);
+                    transform.position += transform.up * Time.deltaTime * 0.5f;
+                    transform.Rotate(0, 0, 300 * Time.deltaTime);
                     yield return null;
                 }
                 break;
@@ -61,8 +61,8 @@ public class Cockroach : MonoBehaviour
                 while (elapsed < duration)
                 {
                     elapsed += Time.deltaTime;
-                    transform.position += transform.forward  * Time.deltaTime * 0.5f;
-                    transform.Rotate(0, -300 * Time.deltaTime, 0);
+                    transform.position += transform.up  * Time.deltaTime * 0.5f;
+                    transform.Rotate(0, 0, -300 * Time.deltaTime);
                     yield return null;
                 }
                 break;
